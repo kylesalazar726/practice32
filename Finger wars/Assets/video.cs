@@ -8,7 +8,6 @@ using UnityEngine.Video;
 public class video : MonoBehaviour
 {
     private const bool V = true;
-
     //-----------------------------[VIDEO PLAYER]----------------------------------// 
     public VideoClip videoclips;
     public VideoPlayer videoplayer;
@@ -23,12 +22,16 @@ public class video : MonoBehaviour
     public VideoClip p1lowkickhit; //your video will be linked here via inspector
     public VideoClip p1highkickhit; //your video will be linked here via inspector
     public VideoClip p1ulti; //your video will be linked here via inspector
-    public VideoClip p1ultimiss; //your video will be linked here via inspector
-
 
 //--[P1 MISS]
     public VideoClip p1lowkickmiss; //your video will be linked here via inspector
     public VideoClip p1highkickmiss; //your video will be linked here via inspector
+    public VideoClip p1ultimiss; //your video will be linked here via inspector
+
+//--[P1 CINE]   
+    public VideoClip p1lowkickhitcine;
+    public VideoClip p1highkickhitcine;
+    public VideoClip p1ultihitcine;
 
 
 //[PLAYER 2 VIDEOS]
@@ -36,11 +39,17 @@ public class video : MonoBehaviour
     public VideoClip p2lowkickhit; //your video will be linked here via inspector
     public VideoClip p2highkickhit; //your video will be linked here via inspector
     public VideoClip p2ulti; //your video will be linked here via inspector
-    public VideoClip p2ultimiss; //your video will be linked here via inspector
 
 //--[P2 MISS]
     public VideoClip p2lowkickmiss; //your video will be linked here via inspector
     public VideoClip p2highkickmiss; //your video will be linked here via inspector
+    public VideoClip p2ultimiss; //your video will be linked here via inspector
+
+//--[P2 CINE]
+    public VideoClip  p2lowkickhitcine;
+    public VideoClip  p2highkickhitcine;
+    public VideoClip  p2ulticine;
+
 
 //---------------------------------------------------------------------------------------
 
@@ -63,13 +72,18 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public int p1hp = 100;
+    public static int p1hp;
+
+    public static string p1namestr;
+    public GameObject p1name;
 
 //[PLAYER 2 HEALTH]
 
     public GameObject p2healthGO;
-    public int p2hp = 100;
+    public static int p2hp;
     
+    public static string p2namestr;
+    public GameObject p2name;
 //---------------------------------------------------------------------------------------
    
    
@@ -82,9 +96,18 @@ public class video : MonoBehaviour
     //public AudioSource battlebgm;
     public AudioSource lowhealthbgm;
     public AudioSource kickhitsfx;
+    public AudioSource killingcinesfx;
     public float setdelaytime;
 
     public bool battletolowhealthbgm = false;
+    public bool someonewontoggle = false;
+
+    public bool p1cinemode = false;
+    public bool p2cinemode = false;
+    public bool p1nomoreulti = false;
+    public bool p2nomoreulti = false;
+
+
 //---------------------------------------------------------------------------------------
 
 //-----------------------------[FADE IN & OUT]----------------------------------// 
@@ -109,10 +132,22 @@ public class video : MonoBehaviour
             if (turn == false)//[Damages P2 when P1 turn]
             {
             p2hp = currenthp -= damageAmount;
+                if (p2hp <= 0)
+                {
+                    endgamefader();
+                    p1cinemode = true;
+                    
+                }
             }
             else if (turn == true)//[Damages P1 when P2 turn]
             {
             p1hp = currenthp -= damageAmount;
+                if (p1hp <= 0)
+                {
+                    endgamefader();
+                    p2cinemode = true;
+                    
+                }
             }        
         
         }
@@ -150,7 +185,23 @@ public class video : MonoBehaviour
     public void checkOver(UnityEngine.Video.VideoPlayer vp)//[Checks if the video is already done]
     {
             idling();//[redirects to idling state if video is done]
+            if (someonewontoggle == true)
+            {
+            if (p2hp <= 0)
+            {
+                delayedendgame();
+            }
+
+            if (p1hp <= 0)
+            {
+                delayedendgame();
+            }
+            }
     }
+//---------------------------------------------------------------------------------------
+
+//-----------------------------[ENDED GAME CHECK]----------------------------------// 
+
 //---------------------------------------------------------------------------------------
 
 //-----------------------------[IDLE STATES]----------------------------------// 
@@ -200,7 +251,7 @@ public class video : MonoBehaviour
         p2healthGO.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p2hp + "";    
         p1healthGO.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p1hp + "";
 
-        fadeOut = true;
+        
         if (fadeOut)
         {
             if (myUIGroup.alpha >= 0)
@@ -213,6 +264,22 @@ public class video : MonoBehaviour
                 }
             }
         }
+        else if (fadeIn == true)
+        {
+            myUIGroup.gameObject.SetActive(true);
+            if (myUIGroup.alpha < 1)
+            {
+                myUIGroup.alpha += Time.deltaTime;
+                if (myUIGroup.alpha >= 1)
+                {
+                    fadeIn = false;
+                }
+
+            }
+        }
+
+
+        
 
     }   
 
@@ -237,10 +304,42 @@ public class video : MonoBehaviour
                     battletolowhealthbgm = true;
             }
         }
+        if (someonewontoggle == false)
+        {
+            if (p1hp <= 0)
+            {
+                Debug.Log("someone won");
+                playerwinner = "player2";
+                someonewontoggle = true;
+                
+            }
+            else if (p2hp <= 0)
+            {
+                Debug.Log("someone won");
+                playerwinner = "player1";
+                someonewontoggle = true;
+                
+            }
+        }
+        if (p1nomoreulti == true)
+        {
+            btnp1ulti.interactable = false;
+        }
+
+        if (p2nomoreulti == true)
+        {
+            btnp2ulti.interactable = false;
+        }
+
     }
     public void Awake()//[Videoplayer]
     {
         videoplayer=GetComponent<VideoPlayer>();
+        p1name.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p1namestr;
+        p2name.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p2namestr;
+
+        fadeOut = true;
+
     }
 
 
@@ -252,7 +351,7 @@ public class video : MonoBehaviour
     public void p1lowkickhitvoid()
     {
         
-        dealDamage(p2hp, 10, 65);// damage & accuracy
+        dealDamage(p2hp, 6, 65);// damage & accuracy
         if (globalaccuracy > 65)
         {
         btnp1highkick.interactable = false;
@@ -268,16 +367,32 @@ public class video : MonoBehaviour
 //--[P1LK-HIT]
         else if (globalaccuracy <= 65)
         {
-        setdelaytime = 0.2f;
-        delayedsfx();
-        btnp1highkick.interactable = false;
-        btnp1ulti.interactable = false;
-        videoplayer.clip = p1lowkickhit;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = true;
-        turnChecker();
-        Debug.Log("player1: lowkick hit");
+            if (p1cinemode == false) //normal
+            {
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1lowkickhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = true;
+            turnChecker();
+            Debug.Log("player1: lowkick hit");
+            }
+
+            else if (p1cinemode == true) //cine lowkick
+            {
+            killingcinesfx.Play();
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1lowkickhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowkick hit CINE");
+            videoplayer.loopPointReached += checkOver;
+            }
         }
     }
 //------------------------
@@ -288,8 +403,8 @@ public class video : MonoBehaviour
 
     public void p1highkickhitvoid()
     {
-        dealDamage(p2hp, 15, 50);// damage & accuracy
-        if (globalaccuracy > 50)
+        dealDamage(p2hp, 12, 45);// damage & accuracy
+        if (globalaccuracy > 45)
         {
         btnp1lowkick.interactable = false;
         btnp1ulti.interactable = false;
@@ -302,17 +417,30 @@ public class video : MonoBehaviour
         }
 
 //--[P1HK-HIT]
-        else if (globalaccuracy <= 50)
+        else if (globalaccuracy <= 45)
         {
-        kickhitsfx.Play();
-        btnp1lowkick.interactable = false;
-        btnp1ulti.interactable = false;
-        videoplayer.clip = p1highkickhit;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = true;
-        turnChecker();
-        Debug.Log("player1: highkick succeed");
+            if (p1cinemode == false) //normal
+            {
+            kickhitsfx.Play();
+            btnp1lowkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1highkickhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = true;
+            turnChecker();
+            Debug.Log("player1: highkick succeed");
+            }
+
+            else if (p1cinemode == true) //cine highkick
+            {
+            delayedsfx();
+            btnp1lowkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1highkickhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: highkick hit CINE");
+            }
         }
     }
 //------------------------
@@ -321,8 +449,8 @@ public class video : MonoBehaviour
 //--[P1ULTI-MISS]
     public void p1ultivoid()
     {
-        dealDamage(p2hp, 35, 25);// damage & accuracy
-        if (globalaccuracy > 25)
+        dealDamage(p2hp, 25, 90);// damage & accuracy
+        if (globalaccuracy > 90)
         {
         btnp1lowkick.interactable = false;
         btnp1highkick.interactable = false;
@@ -332,19 +460,35 @@ public class video : MonoBehaviour
         turn = true;
         turnChecker();
         Debug.Log("player1: ulti missed");
+        p1nomoreulti = true;
+
         }
 
 //--[P1ULTI-HIT]
-        else if (globalaccuracy <= 25)
+        else if (globalaccuracy <= 90)
         {
-        btnp1lowkick.interactable = false;
-        btnp1highkick.interactable = false;
-        videoplayer.clip = p1ulti;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = true;
-        turnChecker();
-        Debug.Log("player1: ulti succeed");
+            if (p1cinemode == false)
+            {
+            btnp1lowkick.interactable = false;
+            btnp1highkick.interactable = false;
+            videoplayer.clip = p1ulti;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = true;
+            turnChecker();
+            Debug.Log("player1: ulti succeed");
+            p1nomoreulti = true;
+            }
+
+            else if (p1cinemode == true)
+            {
+            btnp1lowkick.interactable = false;
+            btnp1highkick.interactable = false;
+            videoplayer.clip = p1ultihitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: ulti succeed");
+            p1nomoreulti = true;
+            }
         }
     }
 //------------------------
@@ -356,7 +500,7 @@ public class video : MonoBehaviour
 //--[P2LK-MISS]
     public void p2lowkickhitvoid()
     {
-        dealDamage(p1hp, 10, 65);// damage & accuracy
+        dealDamage(p1hp, 6, 65);// damage & accuracy
         if (globalaccuracy > 65)
         {
         btnp2highkick.interactable = false;
@@ -373,26 +517,40 @@ public class video : MonoBehaviour
 
         else if (globalaccuracy <= 65)
         {
-        setdelaytime = 0.5f;
-        delayedsfx();
-        btnp2highkick.interactable = false;
-        btnp2ulti.interactable = false;
-        videoplayer.clip = p2lowkickhit;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = false;
-        turnChecker();
-        Debug.Log("player2: lowkick hit");
+            if (p2cinemode == false)
+            {
+            setdelaytime = 0.5f;
+            delayedsfx();
+            btnp2highkick.interactable = false;
+            btnp2ulti.interactable = false;
+            videoplayer.clip = p2lowkickhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = false;
+            turnChecker();
+            Debug.Log("player2: lowkick hit");
+            }
+
+            else if (p2cinemode == true)
+            {
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p2lowkickhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowkick hit CINE");
+            }
         }
     }
 //------------------------
 
 //---------------[P2-HIGHKICK]
-//--[P2LK-MISS]
+//--[P2HK-MISS]
     public void p2highkickhitvoid()
     {
-        dealDamage(p1hp, 15, 50);// damage & accuracy
-        if (globalaccuracy > 50)
+        dealDamage(p1hp, 12, 45);// damage & accuracy
+        if (globalaccuracy > 45)
         {
         btnp2lowkick.interactable = false;
         btnp2ulti.interactable = false;
@@ -404,19 +562,34 @@ public class video : MonoBehaviour
         Debug.Log("player2: highkick missed");
         }
 
-//--[P2LK-HIT]
+//--[P2HK-HIT]
 
-        else if (globalaccuracy <= 50)
+        else if (globalaccuracy <= 45)
         {
-        kickhitsfx.Play();
-        btnp2lowkick.interactable = false;
-        btnp2ulti.interactable = false;
-        videoplayer.clip = p2highkickhit;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = false;
-        turnChecker();
-        Debug.Log("player2: highkick hit");
+
+            if (p2cinemode == false)
+            {
+            kickhitsfx.Play();
+            btnp2lowkick.interactable = false;
+            btnp2ulti.interactable = false;
+            videoplayer.clip = p2highkickhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = false;
+            turnChecker();
+            Debug.Log("player2: highkick hit");
+            }
+
+            else if (p2cinemode == true)
+            {
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p2highkickhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowkick hit CINE");
+            }
         }
     }
 //------------------------
@@ -426,8 +599,8 @@ public class video : MonoBehaviour
    
     public void p2ultivoid()
     {
-        dealDamage(p1hp, 35, 25);// damage & accuracy
-        if (globalaccuracy > 25)
+        dealDamage(p1hp, 25, 90);// damage & accuracy
+        if (globalaccuracy > 90)
         {
         btnp2lowkick.interactable = false;
         btnp2highkick.interactable = false;
@@ -437,19 +610,34 @@ public class video : MonoBehaviour
         turn = false;
         turnChecker();
         Debug.Log("player2: ulti missed");
+        p2nomoreulti = true;
         }
 
 //--[P2ULTI-HIT]
-        else if (globalaccuracy <= 25)
+        else if (globalaccuracy <= 90)
         {
-        btnp2lowkick.interactable = false;
-        btnp2highkick.interactable = false;
-        videoplayer.clip = p2ulti;
-        videoplayer.isLooping = false;
-        videoplayer.loopPointReached += checkOver;
-        turn = false;
-        turnChecker();
-        Debug.Log("player2: ulti succeed");
+            if (p2cinemode == false)
+            {
+            btnp2lowkick.interactable = false;
+            btnp2highkick.interactable = false;
+            videoplayer.clip = p2ulti;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = false;
+            turnChecker();
+            Debug.Log("player2: ulti succeed");
+            p2nomoreulti = true;
+            }
+
+            else if (p2cinemode == true)
+            {
+            btnp2lowkick.interactable = false;
+            btnp2highkick.interactable = false;
+            videoplayer.clip = p2ulticine;
+            videoplayer.isLooping = false;
+            Debug.Log("player2: ulti succeed");
+            p2nomoreulti = true;    
+            }
         }
     }
 //------------------------
@@ -473,6 +661,42 @@ public class video : MonoBehaviour
         kickhitsfx.Play();
     }
 
+    public void delayedendgame()
+    {
+    StartCoroutine(delayedendgameIE());
+    delayedendgameIE();
+    }
+
+    public string playerwinner;
+    IEnumerator delayedendgameIE()
+    {
+        yield return new WaitForSeconds(2f);
+        if (playerwinner == "player1")
+        {
+            Debug.Log("p1wins");
+            battlebgm.instance.GetComponent<AudioSource>().Pause();
+            SceneManager.LoadScene(3);
+        }
+        else if (playerwinner == "player2")
+        {
+            Debug.Log("p2wins");
+            battlebgm.instance.GetComponent<AudioSource>().Pause();
+            SceneManager.LoadScene(3);
+        }   
+    }
+
+
+    public void endgamefader()
+    {
+        StartCoroutine(endgamefaderIE());
+        endgamefaderIE();
+    }
+
+    IEnumerator endgamefaderIE()
+    {
+        yield return new WaitForSeconds(2f);
+        fadeIn = true;
+    }
 
 }
 
