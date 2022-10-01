@@ -142,6 +142,11 @@ public class video : MonoBehaviour
 
 //-----------------------------[SPEECH]----------------------------------// 
 
+    public AudioSource p1speech1;
+    public AudioSource p1speech2;
+    public AudioSource p1speech3;
+    public AudioSource p1ultispeech;
+
     public AudioSource p2speech1;
     public AudioSource p2speech2;
     public AudioSource p2speech3;
@@ -164,7 +169,16 @@ public class video : MonoBehaviour
     }
 
 
-
+    public bool enable_pauseallspeech = false;
+    public void pauseallspeech()
+    {
+        p1speech1.Pause();
+        p1speech2.Pause();
+        p1speech3.Pause();
+        p2speech1.Pause();
+        p2speech2.Pause();
+        p2speech3.Pause();
+    }
 
 
 
@@ -303,7 +317,7 @@ public class video : MonoBehaviour
 
     void Start()//[player 1 first, then player 2]
     {
-
+        waitforentrancetoend();
         entrancereturntoloop();
         videoplayer.clip = entrance;
         videoplayer.isLooping = false;
@@ -409,16 +423,27 @@ public class video : MonoBehaviour
         }
 
 
-
-        if (waitforspeech == false)
+        if (doneentrance == true)
         {
-        waitforspeechdelay();
+            if (waitforspeech == false)
+            {
+            waitforspeechdelay();
+            }
         }
+
+
+        if (enable_pauseallspeech == true)
+        {
+            pauseallspeech();
+        }
+
+
     }
 
+    public bool doneentrance = false;
     public void playerspeech()
     {
-    int speechran = Random.Range(0, 5);
+    int speechran = Random.Range(1, 6);
         if (speechran == 1)
         {  
             p2speech1.Play();
@@ -431,6 +456,31 @@ public class video : MonoBehaviour
         {  
             p2speech3.Play();
         }
+
+        else if (speechran == 4)
+        {  
+            p1speech1.Play();
+        }
+        else if (speechran == 5)
+        {  
+            p1speech2.Play();
+        }
+        else if (speechran == 6)
+        {  
+            p1speech3.Play();
+        }
+    }
+
+
+    public void waitforentrancetoend()
+    {
+        StartCoroutine(waitforentrancetoendIE());
+    }
+
+    IEnumerator waitforentrancetoendIE()
+    {
+        yield return new WaitForSeconds(14f);
+        doneentrance = true;
     }
 
 
@@ -731,6 +781,9 @@ public class video : MonoBehaviour
         dealDamage(p2hp, 25, 90);// damage & accuracy
         if (globalaccuracy > 90)
         {
+        setdelaytime = 5f;
+        activatespeechmuter();
+        p1ultispeech.Play();
         btnp1lowpunch.interactable = false;
         btnp1highpunch.interactable = false; 
         btnp1lowkick.interactable = false;
@@ -750,6 +803,9 @@ public class video : MonoBehaviour
         {
             if (p1cinemode == false)
             {
+            setdelaytime = 5f;
+            activatespeechmuter();
+            p1ultispeech.Play();
             btnp1lowpunch.interactable = false;
             btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
@@ -766,6 +822,9 @@ public class video : MonoBehaviour
 //--[P1HULTICINE-HIT]
             else if (p1cinemode == true)
             {
+            setdelaytime = 5f;
+            activatespeechmuter();
+            p1ultispeech.Play();
             btnp1lowpunch.interactable = false;
             btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
@@ -1037,6 +1096,8 @@ public class video : MonoBehaviour
         dealDamage(p1hp, 25, 90);// damage & accuracy
         if (globalaccuracy > 90)
         {
+        setdelaytime = 4f;
+        activatespeechmuter();
         p2ultispeech.Play();
         p2speech1.Pause();
         p2speech2.Pause();
@@ -1057,6 +1118,8 @@ public class video : MonoBehaviour
         {
             if (p2cinemode == false)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             p2ultispeech.Play();
             p2speech1.Pause();
             p2speech2.Pause();
@@ -1075,6 +1138,8 @@ public class video : MonoBehaviour
 //--[P2ULTICINE-HIT]
             else if (p2cinemode == true)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             p2ultispeech.Play();
             p2speech1.Pause();
             p2speech2.Pause();
@@ -1188,6 +1253,20 @@ public class video : MonoBehaviour
         yield return new WaitForSeconds(4f);
         fadeIn = true;
     }
+
+
+    public void activatespeechmuter()
+    {
+    StartCoroutine(activatespeechmuterIE());
+    }
+
+    IEnumerator activatespeechmuterIE()
+    {
+        enable_pauseallspeech = true;
+        yield return new WaitForSeconds(setdelaytime);
+        enable_pauseallspeech = false;
+    }
+
 
 
     public void nomorebuttons()
