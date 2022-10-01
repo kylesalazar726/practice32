@@ -19,16 +19,22 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 VIDEOS]
 //--[P1 HIT]
+    public VideoClip p1lowpunchhit;
+    public VideoClip p1highpunchhit;
     public VideoClip p1lowkickhit; //your video will be linked here via inspector
     public VideoClip p1highkickhit; //your video will be linked here via inspector
     public VideoClip p1ulti; //your video will be linked here via inspector
 
 //--[P1 MISS]
+    public VideoClip p1lowpunchmiss;
+    public VideoClip p1highpunchmiss;
     public VideoClip p1lowkickmiss; //your video will be linked here via inspector
     public VideoClip p1highkickmiss; //your video will be linked here via inspector
     public VideoClip p1ultimiss; //your video will be linked here via inspector
 
 //--[P1 CINE]   
+    public VideoClip p1lowpunchhitcine;
+    public VideoClip p1highpunchhitcine;
     public VideoClip p1lowkickhitcine;
     public VideoClip p1highkickhitcine;
     public VideoClip p1ultihitcine;
@@ -36,16 +42,22 @@ public class video : MonoBehaviour
 
 //[PLAYER 2 VIDEOS]
 //--[P2 HIT]
+    public VideoClip p2lowpunchhit;
+    public VideoClip p2highpunchhit;
     public VideoClip p2lowkickhit; //your video will be linked here via inspector
     public VideoClip p2highkickhit; //your video will be linked here via inspector
     public VideoClip p2ulti; //your video will be linked here via inspector
 
 //--[P2 MISS]
+    public VideoClip p2lowpunchmiss;
+    public VideoClip p2highpunchmiss;
     public VideoClip p2lowkickmiss; //your video will be linked here via inspector
     public VideoClip p2highkickmiss; //your video will be linked here via inspector
     public VideoClip p2ultimiss; //your video will be linked here via inspector
 
 //--[P2 CINE]
+    public VideoClip p2lowpunchhitcine;
+    public VideoClip p2highpunchhitcine;
     public VideoClip  p2lowkickhitcine;
     public VideoClip  p2highkickhitcine;
     public VideoClip  p2ulticine;
@@ -56,11 +68,15 @@ public class video : MonoBehaviour
 
 //-----------------------------[RECOGNIZING BUTTONS]----------------------------------// 
 //[PLAYER 1 BUTTONS]
+    public Button btnp1lowpunch;
+    public Button btnp1highpunch;
     public Button btnp1lowkick;
     public Button btnp1highkick;
     public Button btnp1ulti;
 
 //[PLAYER 2 BUTTONS]
+    public Button btnp2lowpunch;
+    public Button btnp2highpunch;
     public Button btnp2lowkick;
     public Button btnp2highkick;
     public Button btnp2ulti;
@@ -72,7 +88,7 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public static int p1hp;
+    public static int p1hp = 40;
 
     public static string p1namestr;
     public GameObject p1name;
@@ -80,7 +96,7 @@ public class video : MonoBehaviour
 //[PLAYER 2 HEALTH]
 
     public GameObject p2healthGO;
-    public static int p2hp;
+    public static int p2hp = 40;
     
     public static string p2namestr;
     public GameObject p2name;
@@ -161,18 +177,26 @@ public class video : MonoBehaviour
     {
         if (turn == false)//[Disables all player 2 buttons]
         {
+            btnp1lowpunch.interactable = true;
+            btnp1highpunch.interactable = true;
             btnp1lowkick.interactable = true;
             btnp1highkick.interactable = true;
             btnp1ulti.interactable = true;
+            btnp2lowpunch.interactable = false;
+            btnp2highpunch.interactable = false;
             btnp2lowkick.interactable = false;
             btnp2highkick.interactable = false;
             btnp2ulti.interactable = false;
         }
         else if (turn == true)//[Disables all player 1 buttons]
         {
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
             btnp1highkick.interactable = false;
             btnp1ulti.interactable = false;
+            btnp2lowpunch.interactable = true;
+            btnp2highpunch.interactable = true;
             btnp2lowkick.interactable = true;
             btnp2highkick.interactable = true;
             btnp2ulti.interactable = true;
@@ -236,9 +260,14 @@ public class video : MonoBehaviour
     void Start()//[player 1 first, then player 2]
     {
 
+        btnp1lowpunch.interactable = true;
+        btnp1highpunch.interactable = true;
         btnp1lowkick.interactable = true;
         btnp1highkick.interactable = true;
         btnp1ulti.interactable = true;
+
+        btnp2lowpunch.interactable = false;
+        btnp2highpunch.interactable = false;
         btnp2lowkick.interactable = false;
         btnp2highkick.interactable = false;
         btnp2ulti.interactable = false;
@@ -345,6 +374,136 @@ public class video : MonoBehaviour
 
 
 //-----------------------------[PLAYER 1 ATTACK]----------------------------------// 
+
+
+
+
+
+//---------------[P1-LOWPUNCH]
+//--[P1LP-MISS]
+
+    public void p1lowpunchhitvoid()
+    {
+        
+        dealDamage(p2hp, 3, 75);// damage & accuracy
+        if (globalaccuracy > 75)
+        {
+        btnp1highpunch.interactable = false;
+        btnp1highkick.interactable = false;
+        btnp1lowkick.interactable = false;
+        btnp1ulti.interactable = false;
+        videoplayer.clip = p1lowpunchmiss;
+        videoplayer.isLooping = false;
+        videoplayer.loopPointReached += checkOver;
+        turn = true;
+        turnChecker();
+        Debug.Log("player1: lowpunch missed");
+        }
+
+//--[P1LP-HIT]
+        else if (globalaccuracy <= 75)
+        {
+            if (p1cinemode == false) //normal
+            {
+            setdelaytime = 1f;
+            delayedsfx();
+            setdelaytime = 1.3f;
+            delayedsfx();
+            btnp1highpunch.interactable = false;
+            btnp1highkick.interactable = false;
+            btnp1lowkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1lowpunchhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = true;
+            turnChecker();
+            Debug.Log("player1: lowpunch hit");
+            }
+
+//--[P1LPCINE-HIT]
+            else if (p1cinemode == true) //cine lowpunch
+            {
+            killingcinesfx.Play();
+            setdelaytime = 1f;
+            delayedsfx();
+            btnp1highpunch.interactable = false;
+            btnp1highkick.interactable = false;
+            btnp1lowkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1lowpunchhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowpunch hit CINE");
+            videoplayer.loopPointReached += checkOver;
+            }
+        }
+    }
+//------------------------
+
+
+
+//---------------[P1-HIGHPUNCH]
+//--[P1HP-MISS]
+
+    public void p1highpunchhitvoid()
+    {
+        dealDamage(p2hp, 8, 55);// damage & accuracy
+        if (globalaccuracy > 55)
+        {
+        btnp1lowpunch.interactable = false;
+        btnp1lowkick.interactable = false;
+        btnp1highkick.interactable = false;
+        btnp1ulti.interactable = false;
+        videoplayer.clip = p1highpunchmiss;
+        videoplayer.isLooping = false;
+        videoplayer.loopPointReached += checkOver;
+        turn = true;
+        turnChecker();
+        Debug.Log("player1: highpunch missed");
+        }
+
+//--[P1HP-HIT]
+        else if (globalaccuracy <= 55)
+        {
+            if (p1cinemode == false) //normal
+            {
+            setdelaytime = 1.1f;
+            delayedsfx();
+            setdelaytime = 1.4f;
+            delayedsfx();
+            btnp1lowpunch.interactable = false;
+            btnp1lowkick.interactable = false;
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1highpunchhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = true;
+            turnChecker();
+            Debug.Log("player1: highpunch succeed");
+            }
+
+//--[P1HPCINE-HIT]
+            else if (p1cinemode == true) //cine highpunchs
+            {
+            setdelaytime = 1f;
+            delayedsfx();
+            setdelaytime = 1.3f;
+            delayedsfx();
+            btnp1lowpunch.interactable = false;
+            btnp1lowkick.interactable = false;
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p1highkickhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: highpunch hit CINE");
+            }
+        }
+    }
+//------------------------
+
+
+
 //---------------[P1-LOWKICK]
 //--[P1LK-MISS]
 
@@ -354,6 +513,8 @@ public class video : MonoBehaviour
         dealDamage(p2hp, 6, 65);// damage & accuracy
         if (globalaccuracy > 65)
         {
+        btnp1lowpunch.interactable = false;
+        btnp1highpunch.interactable = false;
         btnp1highkick.interactable = false;
         btnp1ulti.interactable = false;
         videoplayer.clip = p1lowkickmiss;
@@ -371,6 +532,8 @@ public class video : MonoBehaviour
             {
             setdelaytime = 0.2f;
             delayedsfx();
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1highkick.interactable = false;
             btnp1ulti.interactable = false;
             videoplayer.clip = p1lowkickhit;
@@ -381,11 +544,14 @@ public class video : MonoBehaviour
             Debug.Log("player1: lowkick hit");
             }
 
+//--[P1LKCINE-HIT]
             else if (p1cinemode == true) //cine lowkick
             {
             killingcinesfx.Play();
             setdelaytime = 0.2f;
             delayedsfx();
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1highkick.interactable = false;
             btnp1ulti.interactable = false;
             videoplayer.clip = p1lowkickhitcine;
@@ -406,6 +572,8 @@ public class video : MonoBehaviour
         dealDamage(p2hp, 12, 45);// damage & accuracy
         if (globalaccuracy > 45)
         {
+        btnp1lowpunch.interactable = false;
+        btnp1highpunch.interactable = false;
         btnp1lowkick.interactable = false;
         btnp1ulti.interactable = false;
         videoplayer.clip = p1highkickmiss;
@@ -422,6 +590,8 @@ public class video : MonoBehaviour
             if (p1cinemode == false) //normal
             {
             kickhitsfx.Play();
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
             btnp1ulti.interactable = false;
             videoplayer.clip = p1highkickhit;
@@ -432,9 +602,12 @@ public class video : MonoBehaviour
             Debug.Log("player1: highkick succeed");
             }
 
+//--[P1LK-HIT]
             else if (p1cinemode == true) //cine highkick
             {
             delayedsfx();
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
             btnp1ulti.interactable = false;
             videoplayer.clip = p1highkickhitcine;
@@ -452,6 +625,8 @@ public class video : MonoBehaviour
         dealDamage(p2hp, 25, 90);// damage & accuracy
         if (globalaccuracy > 90)
         {
+        btnp1lowpunch.interactable = false;
+        btnp1highpunch.interactable = false; 
         btnp1lowkick.interactable = false;
         btnp1highkick.interactable = false;
         videoplayer.clip = p1ultimiss;
@@ -469,6 +644,8 @@ public class video : MonoBehaviour
         {
             if (p1cinemode == false)
             {
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
             btnp1highkick.interactable = false;
             videoplayer.clip = p1ulti;
@@ -480,8 +657,11 @@ public class video : MonoBehaviour
             p1nomoreulti = true;
             }
 
+//--[P1HULTICINE-HIT]
             else if (p1cinemode == true)
             {
+            btnp1lowpunch.interactable = false;
+            btnp1highpunch.interactable = false;
             btnp1lowkick.interactable = false;
             btnp1highkick.interactable = false;
             videoplayer.clip = p1ultihitcine;
@@ -496,6 +676,121 @@ public class video : MonoBehaviour
 
 
 //-----------------------------[PLAYER 2 ATTACK]----------------------------------// 
+
+
+
+//---------------[P2-LOWPUNCH]
+//--[P2LP-MISS]
+    public void p2lowpunchhitvoid()
+    {
+        dealDamage(p1hp, 3, 75);// damage & accuracy
+        if (globalaccuracy > 75)
+        {
+        btnp2highpunch.interactable = false;
+        btnp2lowkick.interactable = false;
+        btnp2highkick.interactable = false;
+        btnp2ulti.interactable = false;
+        videoplayer.clip = p2lowpunchmiss;
+        videoplayer.isLooping = false;
+        videoplayer.loopPointReached += checkOver;
+        turn = false;
+        turnChecker();
+        Debug.Log("player2: lowpunch missed");
+        }
+
+//--[P2LK-HIT]
+
+        else if (globalaccuracy <= 75)
+        {
+            if (p2cinemode == false)
+            {
+            setdelaytime = 0.5f;
+            delayedsfx();
+            btnp2highpunch.interactable = false;
+            btnp2lowkick.interactable = false;
+            btnp2highkick.interactable = false;
+            btnp2ulti.interactable = false;
+            videoplayer.clip = p2lowpunchhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = false;
+            turnChecker();
+            Debug.Log("player2: lowpunch hit");
+            }
+
+            else if (p2cinemode == true)
+            {
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp2highpunch.interactable = false;
+            btnp2lowkick.interactable = false;
+            btnp1highkick.interactable = false;
+            btnp1ulti.interactable = false;
+            videoplayer.clip = p2lowpunchhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowpunch hit CINE");
+            }
+        }
+    }
+//------------------------
+
+
+//---------------[P2-HIGHPUNCH]
+//--[P2HP-MISS]
+    public void p2highpunchhitvoid()
+    {
+        dealDamage(p1hp, 8, 55);// damage & accuracy
+        if (globalaccuracy > 55)
+        {
+        btnp2lowpunch.interactable = false;
+        btnp2lowkick.interactable = false;
+        btnp2highkick.interactable = false;
+        btnp2ulti.interactable = false;
+        videoplayer.clip = p2highpunchmiss;
+        videoplayer.isLooping = false;
+        videoplayer.loopPointReached += checkOver;
+        turn = false;
+        turnChecker();
+        Debug.Log("player2: highpunch missed");
+        }
+
+//--[P2HP-HIT]
+
+        else if (globalaccuracy <= 55)
+        {
+
+            if (p2cinemode == false)
+            {
+            kickhitsfx.Play();
+            btnp2lowpunch.interactable = false;
+            btnp2lowkick.interactable = false;
+            btnp2highkick.interactable = false;
+            btnp2ulti.interactable = false;
+            videoplayer.clip = p2highpunchhit;
+            videoplayer.isLooping = false;
+            videoplayer.loopPointReached += checkOver;
+            turn = false;
+            turnChecker();
+            Debug.Log("player2: highpunch hit");
+            }
+
+            else if (p2cinemode == true)
+            {
+            setdelaytime = 0.2f;
+            delayedsfx();
+            btnp2lowpunch.interactable = false;
+            btnp2lowkick.interactable = false;
+            btnp2highkick.interactable = false;
+            btnp2ulti.interactable = false;
+            videoplayer.clip = p2highpunchhitcine;
+            videoplayer.isLooping = false;
+            Debug.Log("player1: lowpunch hit CINE");
+            }
+        }
+    }
+//------------------------
+
+
 //---------------[P2-LOWKICK]
 //--[P2LK-MISS]
     public void p2lowkickhitvoid()
