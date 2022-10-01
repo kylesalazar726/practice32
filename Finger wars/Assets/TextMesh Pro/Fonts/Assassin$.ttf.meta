@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 17e29e8831c2ec7468db0da6ad2237cc
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Assassin$
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 12aa13f635df9af47987148b46de0800, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
