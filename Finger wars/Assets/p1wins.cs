@@ -60,17 +60,9 @@ public class p1wins : MonoBehaviour
     {
         myUIGroup.gameObject.SetActive(true);
         fadeIn = true;
-        delayedstartbtn();
-        
-    }
-
-    
-    IEnumerator delayedstartbtn()
-    {
-        StartCoroutine(delayedstartbtn());
-        yield return new WaitForSeconds(3f);
         UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
+        
     }
 
     

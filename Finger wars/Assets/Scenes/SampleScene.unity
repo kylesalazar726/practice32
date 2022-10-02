@@ -6003,7 +6003,7 @@ MonoBehaviour:
   p1highpunchhit: {fileID: 32900000, guid: 3c156e0ecdd301a47af41640678314d5, type: 3}
   p1lowkickhit: {fileID: 32900000, guid: ba5bd6592b2e5064c8d29ffe834f5b0d, type: 3}
   p1highkickhit: {fileID: 32900000, guid: 42c2a273da5c669469a8176f3dc22e85, type: 3}
-  p1ulti: {fileID: 32900000, guid: 972df9c10d30fd149bf4dbd9b9c0d2a6, type: 3}
+  p1ulti: {fileID: 32900000, guid: f1f40eb7b41ae6b40a730f583fefb869, type: 3}
   p1lowpunchmiss: {fileID: 32900000, guid: 256e7988e09413e489ed0b23ec4ddc8d, type: 3}
   p1highpunchmiss: {fileID: 32900000, guid: 9cab10e68a23d40428b3f9b818b55ec7, type: 3}
   p1lowkickmiss: {fileID: 32900000, guid: 5ab38a65f1b3431489f456f6a62214ff, type: 3}

@@ -317,21 +317,21 @@ public class video : MonoBehaviour
 
     void Start()//[player 1 first, then player 2]
     {
+        startdisabledbuttons();
         waitforentrancetoend();
         entrancereturntoloop();
         videoplayer.clip = entrance;
         videoplayer.isLooping = false;
 
-        btnp1lowpunch.interactable = true;
-        btnp1highpunch.interactable = true;
-        btnp1lowkick.interactable = true;
-        btnp1highkick.interactable = true;
-        btnp1ulti.interactable = true;
-
-        btnp2lowpunch.interactable = false;
-        btnp2highpunch.interactable = false;
-        btnp2lowkick.interactable = false;
+        btnp1highkick.interactable = false;
         btnp2highkick.interactable = false;
+        btnp1highpunch.interactable = false;
+        btnp2highpunch.interactable = false;
+        btnp1lowkick.interactable = false;
+        btnp2lowkick.interactable = false;
+        btnp1lowpunch.interactable = false;
+        btnp2lowpunch.interactable = false;
+        btnp1ulti.interactable = false;
         btnp2ulti.interactable = false;
 
         myUIGroup.alpha = 1;
@@ -561,6 +561,8 @@ public class video : MonoBehaviour
 //--[P1LPCINE-HIT]
             else if (p1cinemode == true) //cine lowpunch
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             killingcinesfx.Play();
             setdelaytime = 1f;
             delayedsfxpunch();
@@ -629,6 +631,8 @@ public class video : MonoBehaviour
 //--[P1HPCINE-HIT]
             else if (p1cinemode == true) //cine highpunchs
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             setdelaytime = 0.5f;
             delayedsfxpunch();
             setdelaytime = 0.8f;
@@ -694,6 +698,8 @@ public class video : MonoBehaviour
 //--[P1LKCINE-HIT]
             else if (p1cinemode == true) //cine lowkick
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             videoplayer.isLooping = false;
             killingcinesfx.Play();
             setdelaytime = 1.5f;
@@ -756,6 +762,8 @@ public class video : MonoBehaviour
 //--[P1LKCINE-HIT]
             else if (p1cinemode == true) //cine highkick
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             videoplayer.isLooping = false;
             setdelaytime = 1.1f;
             delayedsfx();
@@ -892,6 +900,8 @@ public class video : MonoBehaviour
 //--[P2LPCINE-HIT]
             else if (p2cinemode == true)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             setdelaytime = 1.3f;
             delayedsfxpunch();
             setdelaytime = 1.6f;
@@ -958,6 +968,8 @@ public class video : MonoBehaviour
 //--[P2HPCINE-HIT]
             else if (p2cinemode == true)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             setdelaytime = 0.9f;
             delayedsfxpunch();
             setdelaytime = 1.2f;
@@ -1017,6 +1029,8 @@ public class video : MonoBehaviour
 //--[P2LKCINE-HIT]
             else if (p2cinemode == true)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             setdelaytime = 1.7f;
             delayedsfx();
             btnp1highkick.interactable = false;
@@ -1072,6 +1086,8 @@ public class video : MonoBehaviour
 //--[P2HKCINE-HIT]
             else if (p2cinemode == true)
             {
+            setdelaytime = 4f;
+            activatespeechmuter();
             setdelaytime = 1.5f;
             delayedsfx();
             btnp1highkick.interactable = false;
@@ -1175,7 +1191,7 @@ public class video : MonoBehaviour
     IEnumerator delayedsfxpunchIE()
     {
         yield return new WaitForSeconds(setdelaytime);
-        int speechran = Random.Range(0, 3);
+        int speechran = Random.Range(1, 3);
             if (speechran == 1)
             {
                 punchsfx1.Play(); 
@@ -1200,7 +1216,7 @@ public class video : MonoBehaviour
     IEnumerator delayedsfxIE()
     {
         yield return new WaitForSeconds(setdelaytime);
-        int speechran = Random.Range(0, 3);
+        int speechran = Random.Range(1, 3);
             if (speechran == 1)
             {
                 kicksfx1.Play(); 
@@ -1268,6 +1284,29 @@ public class video : MonoBehaviour
     }
 
 
+    public void startdisabledbuttons()
+    {
+    StartCoroutine(startdisabledbuttonsIE());
+    }
+
+    IEnumerator startdisabledbuttonsIE()
+    {
+    yield return new WaitForSeconds(14f);
+    btnp1lowpunch.interactable = true;
+    btnp1highpunch.interactable = true;
+    btnp1lowkick.interactable = true;
+    btnp1highkick.interactable = true;
+    btnp1ulti.interactable = true;
+
+    btnp2lowpunch.interactable = false;
+    btnp2highpunch.interactable = false;
+    btnp2lowkick.interactable = false;
+    btnp2highkick.interactable = false;
+    btnp2ulti.interactable = false;
+
+    }
+
+
 
     public void nomorebuttons()
     {
@@ -1283,6 +1322,8 @@ public class video : MonoBehaviour
     btnp2ulti.interactable = false;
 
     }
+
+
 
 }
 

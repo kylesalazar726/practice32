@@ -562,7 +562,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875318046}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: ff36e27be248fb342ad7427bccc1ec42, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 2fb7e6d9c871e264ca717ab1b6808bf2, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -620,60 +620,3 @@ MonoBehaviour:
   myUIGroup: {fileID: 344711715}
   fadeOut: 0
   fadeIn: 0
---- !u!1001 &2957868440606171610
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 377.19785
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 161.14008
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.9766655
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189213, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2957868440725189214, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}
-      propertyPath: m_Name
-      value: battlebgm
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a8ef040107cc72748af5c85cce47fe93, type: 3}

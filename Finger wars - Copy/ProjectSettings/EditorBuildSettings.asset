@@ -15,6 +15,21 @@ EditorBuildSettings:
     path: Assets/Scenes/loading.unity
     guid: bd7979ed11208bc4e8ffdbc4155d68e0
   - enabled: 1
+    path: Assets/Scenes/nameinput.unity
+    guid: 9a70f567e20750b4fa3d31a1550a6d24
+  - enabled: 1
+    path: Assets/Scenes/nameinput 1.unity
+    guid: 4c6777fc09d2da34580fcb86b3d6dc71
+  - enabled: 1
+    path: Assets/Scenes/loading 1.unity
+    guid: cd90d75343edcc4409e2640ffef3030e
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/p1wins.unity
+    guid: fd69a2606e109c44d9eeac09d602e6e9
+  - enabled: 1
+    path: Assets/Scenes/p2wins.unity
+    guid: e1894e693c15cf943a77df4730cc52b5
   m_configObjects: {}
