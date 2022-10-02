@@ -90,7 +90,7 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public static int p1hp = 100;
+    public static int p1hp = 70;
 
     public static string p1namestr = "p1";
     public GameObject p1name;
@@ -134,8 +134,8 @@ public class video : MonoBehaviour
 
     public bool p1cinemode = false;
     public bool p2cinemode = false;
-    public bool p1nomoreulti = false;
-    public bool p2nomoreulti = false;
+    public static bool p1nomoreulti = false;
+    public static bool p2nomoreulti = false;
 //---------------------------------------------------------------------------------------
 
 
