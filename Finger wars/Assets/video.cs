@@ -90,7 +90,7 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public static int p1hp = 100;
+    public static int p1hp = 2;
 
     public static string p1namestr = "p1";
     public GameObject p1name;
@@ -98,7 +98,7 @@ public class video : MonoBehaviour
 //[PLAYER 2 HEALTH]
 
     public GameObject p2healthGO;
-    public static int p2hp = 30;
+    public static int p2hp = 100;
     
     public static string p2namestr = "p2";
     public GameObject p2name;
@@ -566,7 +566,7 @@ public class video : MonoBehaviour
 
     IEnumerator p2introspeechdelayIE()
     {
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(6f);
         int p2introspeechran = Random.Range(1, 3);
             if (p2introspeechran == 1)
             {
@@ -1017,6 +1017,7 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            p2outros();
             bassdrop.Play();
             delayedendgame();
             }
@@ -1087,7 +1088,7 @@ public class video : MonoBehaviour
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
             bassdrop.Play();
-            p1outros();
+            p2outros();
             delayedendgame();
             }
         }
@@ -1146,7 +1147,7 @@ public class video : MonoBehaviour
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
             bassdrop.Play();
-            p1outros();
+            p2outros();
             pauseallspeech();
             delayedendgame();
             }
@@ -1206,7 +1207,7 @@ public class video : MonoBehaviour
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
             bassdrop.Play();
-            p1outros();
+            p2outros();
             pauseallspeech();
             delayedendgame();
             }
@@ -1280,7 +1281,6 @@ public class video : MonoBehaviour
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
             bassdrop.Play();
-            p1outros();
             delayedendgame();
             }
         }
