@@ -90,7 +90,7 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public static int p1hp = 70;
+    public static int p1hp = 100;
 
     public static string p1namestr = "p1";
     public GameObject p1name;
@@ -98,7 +98,7 @@ public class video : MonoBehaviour
 //[PLAYER 2 HEALTH]
 
     public GameObject p2healthGO;
-    public static int p2hp = 100;
+    public static int p2hp = 30;
     
     public static string p2namestr = "p2";
     public GameObject p2name;
@@ -124,6 +124,7 @@ public class video : MonoBehaviour
     public AudioSource kicksfx2;
     public AudioSource kicksfx3;
 
+    public AudioSource bassdrop;
 
 
     public AudioSource killingcinesfx;
@@ -136,6 +137,8 @@ public class video : MonoBehaviour
     public bool p2cinemode = false;
     public static bool p1nomoreulti = false;
     public static bool p2nomoreulti = false;
+
+    public bool cricialhealthtoggle = false;
 //---------------------------------------------------------------------------------------
 
 
@@ -147,10 +150,30 @@ public class video : MonoBehaviour
     public AudioSource p1speech3;
     public AudioSource p1ultispeech;
 
+    public AudioSource p1intro1;
+    public AudioSource p1intro2;
+    public AudioSource p1intro3;
+
+    public AudioSource p1outro1;
+    public AudioSource p1outro2;
+    public AudioSource p1outro3;
+
+
+
+
     public AudioSource p2speech1;
     public AudioSource p2speech2;
     public AudioSource p2speech3;
     public AudioSource p2ultispeech;
+
+    public AudioSource p2intro1;
+    public AudioSource p2intro2;
+    public AudioSource p2intro3;
+
+    public AudioSource p2outro1;
+    public AudioSource p2outro2;
+    public AudioSource p2outro3;
+
 
 
     public bool waitforspeech = false;
@@ -186,6 +209,7 @@ public class video : MonoBehaviour
 
 //-----------------------------[FADE IN & OUT]----------------------------------// 
     public CanvasGroup myUIGroup;
+    public CanvasGroup lowhealthred;
     public bool fadeOut = false;
     public bool fadeIn = false;
     public bool fadenextscene = false;
@@ -335,6 +359,7 @@ public class video : MonoBehaviour
         btnp2ulti.interactable = false;
 
         myUIGroup.alpha = 1;
+        lowhealthred.alpha = 0;
     }
     
     void Update()//[constant updating healths of player 1&2]
@@ -342,7 +367,8 @@ public class video : MonoBehaviour
         p2healthGO.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p2hp + "";    
         p1healthGO.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p1hp + "";
 
-        
+
+
         if (fadeOut)
         {
             if (myUIGroup.alpha >= 0)
@@ -385,6 +411,8 @@ public class video : MonoBehaviour
                     //battlebgm.instance.GetComponent<AudioSource>().Play();
                     lowhealthbgm.Play();
                     battletolowhealthbgm = true;
+                    lowhealthred.gameObject.SetActive(true);
+                    cricialhealthtoggle = true;
             }
             else if (p2hp <= 20)
             {
@@ -393,6 +421,8 @@ public class video : MonoBehaviour
                     //battlebgm.instance.GetComponent<AudioSource>().Play();
                     lowhealthbgm.Play();
                     battletolowhealthbgm = true;
+                    lowhealthred.gameObject.SetActive(true);
+                    cricialhealthtoggle = true;
             }
         }
         if (someonewontoggle == false)
@@ -437,6 +467,12 @@ public class video : MonoBehaviour
             pauseallspeech();
         }
 
+        if (cricialhealthtoggle == true)
+        {
+        lowhealthred.gameObject.SetActive(true);
+        float criticialhpopacity = Random.Range(0f, 0.5f);
+        lowhealthred.alpha = criticialhpopacity;
+        }
 
     }
 
@@ -492,8 +528,61 @@ public class video : MonoBehaviour
         p2name.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = p2namestr;
 
         fadeOut = true;
+        p1introspeechdelay();
+        p2introspeechdelay();
+        lowhealthred.gameObject.SetActive(false);
+    }
+
+    public void p1introspeechdelay()
+    {
+        StartCoroutine(p1introspeechdelayIE());
+    }
+
+    IEnumerator p1introspeechdelayIE()
+    {
+        yield return new WaitForSeconds(2f);
+        int p1introspeechran = Random.Range(1, 3);
+            if (p1introspeechran == 1)
+            {
+                p1intro1.Play();
+            }
+            else if (p1introspeechran == 2)
+            {   
+                p1intro2.Play();
+            }
+            else if (p1introspeechran == 3)
+            {
+                p1intro3.Play();
+            }
 
     }
+
+
+
+    public void p2introspeechdelay()
+    {
+        StartCoroutine(p2introspeechdelayIE());
+    }
+
+    IEnumerator p2introspeechdelayIE()
+    {
+        yield return new WaitForSeconds(8f);
+        int p2introspeechran = Random.Range(1, 3);
+            if (p2introspeechran == 1)
+            {
+                p2intro1.Play();
+            }
+            else if (p2introspeechran == 2)
+            {   
+                p2intro2.Play();
+            }
+            else if (p2introspeechran == 3)
+            {
+                p2intro3.Play();
+            }
+
+    }
+
 
 
     public void entrancereturntoloop()
@@ -563,7 +652,6 @@ public class video : MonoBehaviour
             {
             setdelaytime = 4f;
             activatespeechmuter();
-            killingcinesfx.Play();
             setdelaytime = 1f;
             delayedsfxpunch();
             setdelaytime = 1.3f;
@@ -579,6 +667,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -647,6 +738,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -713,6 +807,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -776,6 +873,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -844,6 +944,7 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
             delayedendgame();
             }
         }
@@ -916,6 +1017,7 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
             delayedendgame();
             }
         }
@@ -984,6 +1086,8 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
             delayedendgame();
             }
         }
@@ -1041,6 +1145,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -1098,6 +1205,9 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
+            pauseallspeech();
             delayedendgame();
             }
         }
@@ -1169,6 +1279,8 @@ public class video : MonoBehaviour
             lowhealthbgm.Pause();
             battlebgm.instance.GetComponent<AudioSource>().Pause();
             nomorebuttons();
+            bassdrop.Play();
+            p1outros();
             delayedendgame();
             }
         }
@@ -1323,7 +1435,39 @@ public class video : MonoBehaviour
 
     }
 
+    public void p1outros()
+    {
+        int p1outroran = Random.Range(1, 3);
+        if (p1outroran == 1)
+        {
+            p1outro1.Play(); 
+        }
+        else if (p1outroran == 2)
+        {
+            p1outro2.Play(); 
+        }
+        else if (p1outroran == 3)
+        {
+            p1outro3.Play(); 
+        }  
+    }
 
+    public void p2outros()
+    {
+        int p2outroran = Random.Range(1, 3);
+        if (p2outroran == 1)
+        {
+            p2outro1.Play(); 
+        }
+        else if (p2outroran == 2)
+        {
+            p2outro2.Play(); 
+        }
+        else if (p2outroran == 3)
+        {
+            p2outro3.Play(); 
+        }  
+    }
 
 }
 
