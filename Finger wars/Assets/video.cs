@@ -90,7 +90,7 @@ public class video : MonoBehaviour
 
 //[PLAYER 1 HEALTH]
     public GameObject p1healthGO;
-    public static int p1hp = 2;
+    public static int p1hp = 30;
 
     public static string p1namestr = "p1";
     public GameObject p1name;
@@ -98,7 +98,7 @@ public class video : MonoBehaviour
 //[PLAYER 2 HEALTH]
 
     public GameObject p2healthGO;
-    public static int p2hp = 100;
+    public static int p2hp = 30;
     
     public static string p2namestr = "p2";
     public GameObject p2name;
